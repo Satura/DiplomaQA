@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=pass
+    restart: always
+    ports:
+      - '3306:3306'
+    container_name: m_db
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=pass
+    ports:
+      - 5432:5432
+    container_name: p_db
+
+  nodejs:
+    build: ./gate-simulator
+    ports:
+      - 9999:9999
+
+  #adminer:
+   # image: adminer
+    #restart: always
+    #ports:
+    #  - 8081:8080
