@@ -228,7 +228,7 @@ public class FieldsTest {
     }
 
     @Test
-    void shouldNotPayWhenLongCVV() {
+    void shouldCutLongCVV() {
         val info = getLongCVVCard();
         paymentPage.fillForm(info);
         String expected = getLongCVVCard().getCvv().substring(4);

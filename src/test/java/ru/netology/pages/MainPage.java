@@ -12,13 +12,15 @@ public class MainPage {
     private static final SelenideElement wayHeader = $("#root > div > h3");
 
 
-    public void payWithDebitCard() {
+    public PaymentPage payWithDebitCard() {
         buyBtn.click();
         wayHeader.shouldHave(Condition.exactText("Оплата по карте"));
+        return new PaymentPage();
     }
 
-    public void payWithCreditCard() {
+    public CreditpayPage payWithCreditCard() {
         creditBtn.click();
         wayHeader.shouldHave(Condition.exactText("Кредит по данным карты"));
+        return new CreditpayPage();
     }
 }

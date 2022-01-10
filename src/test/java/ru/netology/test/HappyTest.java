@@ -6,6 +6,7 @@ import io.qameta.allure.selenide.AllureSelenide;
 import lombok.val;
 import org.junit.jupiter.api.*;
 import ru.netology.data.ConnectionHelper;
+import ru.netology.pages.CreditpayPage;
 import ru.netology.pages.MainPage;
 import ru.netology.pages.PaymentPage;
 
@@ -17,16 +18,20 @@ import static ru.netology.data.DataHelper.getValidDeclinedCard;
 import static ru.netology.data.ConnectionHelper.*;
 
 public class HappyTest {
+    MainPage mainPage;
+    PaymentPage paymentPage;
+    CreditpayPage creditpayPage;
+
     @BeforeAll
     static void setUp() {
         Configuration.screenshots = false;
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
-
     }
 
     @BeforeEach
     void setUpUrl() {
         open(System.getProperty("sut.url"));
+        mainPage = open(System.getProperty("sut.url"), MainPage.class);
     }
 
     @AfterEach
@@ -38,19 +43,14 @@ public class HappyTest {
     static void tearDown() {
         ConnectionHelper.cleanDb();
         SelenideLogger.removeListener("AllureSelenide");
-
     }
-
-
-    MainPage mainPage = new MainPage();
-    PaymentPage paymentPage = new PaymentPage();
 
     @Nested
     class HappyPath1OfDebitCardTests {
 
         @BeforeEach
         void setUpAllDebitCardTests() {
-            mainPage.payWithDebitCard();
+            paymentPage = mainPage.payWithDebitCard();
         }
 
         @Test
@@ -58,9 +58,6 @@ public class HappyTest {
             val info = getValidApprovedCard();
             paymentPage.fillForm(info);
             paymentPage.waitIfSuccessMessage();
-            val expectedAmount = "4500000";
-            val actualAmount = getPaymentAmount();
-            assertEquals(expectedAmount, actualAmount);
             val expectedStatus = "APPROVED";
             val actualStatus = getStatusForPaymentWithDebitCard();
             assertEquals(expectedStatus, actualStatus);
@@ -85,14 +82,14 @@ public class HappyTest {
 
         @BeforeEach
         void setUpAllCreditCardTests() {
-            mainPage.payWithCreditCard();
+            creditpayPage = mainPage.payWithCreditCard();
         }
 
         @Test
         void shouldDoPaymentWhenValidApprovedCard() {
             val info = getValidApprovedCard();
-            paymentPage.fillForm(info);
-            paymentPage.waitIfSuccessMessage();
+            creditpayPage.fillForm(info);
+            creditpayPage.waitIfSuccessMessage();
             val expectedStatus = "APPROVED";
             val actualStatus = getStatusForPaymentWithCreditCard();
             assertEquals(expectedStatus, actualStatus);
@@ -106,8 +103,8 @@ public class HappyTest {
         @Test
         void shouldNotDoPaymentWhenValidDeclinedCard() {
             val info = getValidDeclinedCard();
-            paymentPage.fillForm(info);
-            paymentPage.waitIfFailMessage();
+            creditpayPage.fillForm(info);
+            creditpayPage.waitIfFailMessage();
             val expectedStatus = "DECLINED";
             val actualStatus = getStatusForPaymentWithCreditCard();
             assertEquals(expectedStatus, actualStatus);
