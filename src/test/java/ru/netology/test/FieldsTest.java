@@ -6,8 +6,11 @@ import io.qameta.allure.selenide.AllureSelenide;
 import lombok.val;
 import org.junit.jupiter.api.*;
 import ru.netology.data.ConnectionHelper;
+import ru.netology.pages.CreditpayPage;
 import ru.netology.pages.MainPage;
 import ru.netology.pages.PaymentPage;
+
+import java.time.LocalDate;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,28 +19,27 @@ import static ru.netology.data.DataHelper.*;
 
 
 public class FieldsTest {
+
+    MainPage mainPage;
+    PaymentPage paymentPage;
+
     @BeforeAll
     static void setUp() {
         Configuration.screenshots = false;
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
-
     }
 
     @AfterAll
     static void tearDown() {
         ConnectionHelper.cleanDb();
         SelenideLogger.removeListener("AllureSelenide");
-
     }
 
     @BeforeEach
     void setUpUrl() {
-        open(System.getProperty("sut.url"));
-        mainPage.payWithDebitCard();
+        mainPage = open(System.getProperty("sut.url"), MainPage.class);
+        paymentPage = mainPage.payWithDebitCard();
     }
-
-    MainPage mainPage = new MainPage();
-    PaymentPage paymentPage = new PaymentPage();
 
     /* Проверки поля "Номер карты" */
 
@@ -49,7 +51,7 @@ public class FieldsTest {
     }
 
     @Test
-    void shouldNotDoPaymentWhenSortCard() {
+    void shouldNotDoPaymentWhenShortCard() {
         val info = getShortNumberCard();
         paymentPage.fillForm(info);
         paymentPage.waitIfWrongFormatMessage();
@@ -162,7 +164,9 @@ public class FieldsTest {
     void shouldNotPayWhenPastMonthPresentYear() {
         val info = getPastMonthPresentYearCard();
         paymentPage.fillForm(info);
-        paymentPage.waitIfWrongTermMessage();
+        LocalDate today = LocalDate.now();
+        if (today.getMonth().getValue() == 1) paymentPage.waitIfCardExpiredMessage();
+        else paymentPage.waitIfWrongTermMessage();
     }
 
     /* Проверки поля "Владелец" */
@@ -215,7 +219,7 @@ public class FieldsTest {
     void shouldNotPayWhenEmptyCVV() {
         val info = getEmptyCVVCard();
         paymentPage.fillForm(info);
-        assertEquals ("Поле обязательно для заполнения",paymentPage.getCVVSubLine().trim());
+        assertEquals("Поле обязательно для заполнения", paymentPage.getCVVSubLine().trim());
         paymentPage.waitIfWrongFormatMessage();
 
     }
@@ -232,7 +236,7 @@ public class FieldsTest {
         val info = getLongCVVCard();
         paymentPage.fillForm(info);
         String expected = getLongCVVCard().getCvv().substring(4);
-        assertEquals(expected,paymentPage.getCVVField());
+        assertEquals(expected, paymentPage.getCVVField());
     }
 
     @Test

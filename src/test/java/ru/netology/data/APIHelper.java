@@ -15,55 +15,16 @@ public class APIHelper {
             .log(LogDetail.ALL)
             .build();
 
-    public static String fillPaymentFormWithDebitCardData(DataHelper.CardInfo cardValidInformationModel) {
+	public static String fillForm(DataHelper.CardInfo info, String path, int code) {
         return given()
                 .spec(requestSpec)
-                .body(cardValidInformationModel)
+                .body(info)
 
                 .when()
-                .post("/api/v1/pay")
+                .post(path)
 
                 .then()
-                .statusCode(200)
-                .extract().response().asString();
-    }
-
-    public static String fillPaymentFormWithCreditCardData(DataHelper.CardInfo cardValidInformationModel) {
-        return given()
-                .spec(requestSpec)
-                .body(cardValidInformationModel)
-
-                .when()
-                .post("/api/v1/credit")
-
-                .then()
-                .statusCode(200)
-                .extract().response().asString();
-    }
-
-    public static String fillFormWithWrongCreditCard(DataHelper.CardInfo cardValidInformationModel) {
-        return given()
-                .spec(requestSpec)
-                .body(cardValidInformationModel)
-
-                .when()
-                .post("/api/v1/credit")
-
-                .then()
-                .statusCode(400)
-                .extract().response().asString();
-    }
-
-    public static String fillFormWithWrongDebitCard(DataHelper.CardInfo cardValidInformationModel) {
-        return given()
-                .spec(requestSpec)
-                .body(cardValidInformationModel)
-
-                .when()
-                .post("/api/v1/credit")
-
-                .then()
-                .statusCode(400)
+                .statusCode(code)
                 .extract().response().asString();
     }
 }

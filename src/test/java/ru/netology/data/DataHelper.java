@@ -22,7 +22,7 @@ public class DataHelper {
 
     public static LocalDate today = LocalDate.now();
     public static Integer tMonth = today.getMonthValue();
-    public static Integer tYear = today.getYear();
+    public static Integer tYear = today.getYear() - 2000;
     public static Integer pYear = tYear - 1;
     public static Integer pMonth;
     public static DecimalFormat dF = new DecimalFormat( "00" );
@@ -36,8 +36,8 @@ public class DataHelper {
         return pMonth;
     }
 
-    public static Integer cvv = (int) (Math.random() * 1000);
-    public static Integer cvvLong = (int) (Math.random() * 10000);
+    public static Integer cvv = (int) (Math.random() * 1_000);
+    public static Integer cvvLong = (int) (Math.random() * 10_000);
     static Integer cvvShort = (int) (Math.random() * 10);
 
     public static CardInfo getValidApprovedCard(){
@@ -126,6 +126,7 @@ public class DataHelper {
     }
 
 // Для проверок поля "Владелец"
+
     public static CardInfo getEmptyOwnerCard(){
         return new CardInfo("4444 4444 4444 4441", dF.format(tMonth), dF.format(tYear+1), "", cvv.toString());
     }
@@ -151,6 +152,7 @@ public class DataHelper {
     }
 
 // Для проверок поля "CVV"
+
     public static CardInfo getEmptyCVVCard(){
         return new CardInfo("4444 4444 4444 4441", dF.format(tMonth), dF.format(tYear+1), "Popova Irina", "");
     }

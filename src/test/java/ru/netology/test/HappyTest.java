@@ -30,7 +30,6 @@ public class HappyTest {
 
     @BeforeEach
     void setUpUrl() {
-        open(System.getProperty("sut.url"));
         mainPage = open(System.getProperty("sut.url"), MainPage.class);
     }
 

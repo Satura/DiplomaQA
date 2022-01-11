@@ -80,5 +80,4 @@ public class PaymentPage {
         return cvvSubLine.getText();
     }
 
-
 }

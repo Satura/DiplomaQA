@@ -22,14 +22,14 @@ public class CreditpayPage {
     private final SelenideElement cvvSubLine = subLines.get(1);
 
 
-    private final SelenideElement continueButton = $(byText("Продолжить"));
+    private final SelenideElement continueButton = $(byText("РџСЂРѕРґРѕР»Р¶РёС‚СЊ"));
 
-    private final SelenideElement successNotification = $(byText("Операция одобрена Банком."));
-    private final SelenideElement failNotification = $(byText("Ошибка! Банк отказал в проведении операции."));
-    private final SelenideElement wrongFormatMessage = $(byText("Неверный формат"));
-    private final SelenideElement wrongTermMessage = $(byText("Неверно указан срок действия карты"));
-    private final SelenideElement cardExpiredMessage = $(byText("Истёк срок действия карты"));
-    private final SelenideElement fieldFillRequiredMessage = $(byText("Поле обязательно для заполнения"));
+    private final SelenideElement successNotification = $(byText("РћРїРµСЂР°С†РёСЏ РѕРґРѕР±СЂРµРЅР° Р‘Р°РЅРєРѕРј."));
+    private final SelenideElement failNotification = $(byText("РћС€РёР±РєР°! Р‘Р°РЅРє РѕС‚РєР°Р·Р°Р» РІ РїСЂРѕРІРµРґРµРЅРёРё РѕРїРµСЂР°С†РёРё."));
+    private final SelenideElement wrongFormatMessage = $(byText("РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚"));
+    private final SelenideElement wrongTermMessage = $(byText("РќРµРІРµСЂРЅРѕ СѓРєР°Р·Р°РЅ СЃСЂРѕРє РґРµР№СЃС‚РІРёСЏ РєР°СЂС‚С‹"));
+    private final SelenideElement cardExpiredMessage = $(byText("РСЃС‚С‘Рє СЃСЂРѕРє РґРµР№СЃС‚РІРёСЏ РєР°СЂС‚С‹"));
+    private final SelenideElement fieldFillRequiredMessage = $(byText("РџРѕР»Рµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ"));
 
     public void fillForm(DataHelper.CardInfo info) {
         numberField.setValue(info.getNumber());
