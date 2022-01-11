@@ -44,7 +44,7 @@ test {
     //ignoreFailures = true
     useJUnitPlatform()
     systemProperty 'selenide.browser', System.getProperty('selenide.browser', "firefox")
-    //systemProperty 'selenide.headless', System.getProperty('selenide.headless', "true")
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless', "true")
     systemProperty 'db.url', System.getProperty('db.url')
     systemProperty 'db.user', System.getProperty('db.user', 'app')
     systemProperty 'db.password', System.getProperty('db.password', 'pass')
