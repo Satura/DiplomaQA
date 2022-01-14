@@ -1,16 +1,13 @@
 package ru.netology.data;
 
-import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
-import org.apache.http.impl.client.AbstractResponseHandler;
 
-import java.sql.*;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConnectionHelper {
     private static final String url = System.getProperty("db.url");
@@ -20,16 +17,15 @@ public class ConnectionHelper {
     private static final String password = System.getProperty("db.password");
     private static Connection conn;
 
-    @SneakyThrows
     private static Connection getConnection() {
         try {
             conn = DriverManager.getConnection(url, user, password);
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return conn;
     }
 
-    @SneakyThrows
     public static void cleanDb() {
         val runner = new QueryRunner();
         val creditRequest = "DELETE FROM credit_request_entity";
@@ -45,7 +41,6 @@ public class ConnectionHelper {
         }
     }
 
-    @SneakyThrows
     public static String getStatusForPaymentWithDebitCard() {
         val extractStatus = "SELECT * FROM payment_entity";
         val runner = new QueryRunner();
@@ -58,7 +53,6 @@ public class ConnectionHelper {
         return null;
     }
 
-    @SneakyThrows
     public static String getStatusForPaymentWithCreditCard() {
         val extractStatus = "SELECT * FROM credit_request_entity";
         val runner = new QueryRunner();
@@ -71,7 +65,6 @@ public class ConnectionHelper {
         return null;
     }
 
-    @SneakyThrows
     public static String getPaymentId() {
         val extractTransactionId = "SELECT * FROM payment_entity";
         val runner = new QueryRunner();
@@ -84,7 +77,6 @@ public class ConnectionHelper {
         return null;
     }
 
-    @SneakyThrows
     public static String getPaymentAmount() {
         val extractAmount = "SELECT * FROM payment_entity";
         val runner = new QueryRunner();
@@ -97,7 +89,6 @@ public class ConnectionHelper {
         return null;
     }
 
-    @SneakyThrows
     public static String getCreditId() {
         val extractBankId = "SELECT * FROM credit_request_entity";
         val runner = new QueryRunner();
@@ -110,7 +101,6 @@ public class ConnectionHelper {
         return null;
     }
 
-    @SneakyThrows
     public static String getOrderPaymentId() {
         val extractPaymentId = "SELECT * FROM order_entity";
         val runner = new QueryRunner();
@@ -123,7 +113,6 @@ public class ConnectionHelper {
         return null;
     }
 
-    @SneakyThrows
     public static String getOrderCreditId() {
         val extractCreditId = "SELECT * FROM order_entity";
         val runner = new QueryRunner();
@@ -136,12 +125,15 @@ public class ConnectionHelper {
         return null;
     }
 
-    @SneakyThrows
     public static int getOrderCount() {
         String query = "SELECT * FROM order_entity";
         val runner = new QueryRunner();
-        conn = getConnection();
-        val result = runner.execute(conn, query, new BeanListHandler<>(OrderEntity.class));
-        return result.size();
+        try (val conn = getConnection()) {
+            val result = runner.execute(conn, query, new BeanListHandler<>(OrderEntity.class));
+            return result.size();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

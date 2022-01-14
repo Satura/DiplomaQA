@@ -70,13 +70,16 @@ public class PaymentPage {
     public String getMonthField() {
         return monthField.getText();
     }
+
     public String getYearField() {
         return yearField.getText();
     }
+
     public String getCVVField() {
         return cvvField.getText();
     }
-    public String getCVVSubLine(){
+
+    public String getCVVSubLine() {
         return cvvSubLine.getText();
     }
 

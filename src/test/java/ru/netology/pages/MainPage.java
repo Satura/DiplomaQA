@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class MainPage {
     private static final SelenideElement buyBtn = $(byText("Купить"));
-    private static final SelenideElement creditBtn =  $(byText("Купить в кредит"));
+    private static final SelenideElement creditBtn = $(byText("Купить в кредит"));
     private static final SelenideElement wayHeader = $("#root > div > h3");
 
 

@@ -15,7 +15,7 @@ public class APIHelper {
             .log(LogDetail.ALL)
             .build();
 
-	public static String fillForm(DataHelper.CardInfo info, String path, int code) {
+    public static String fillForm(DataHelper.CardInfo info, String path, int code) {
         return given()
                 .spec(requestSpec)
                 .body(info)

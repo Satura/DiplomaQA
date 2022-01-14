@@ -13,9 +13,9 @@ import ru.netology.pages.PaymentPage;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static ru.netology.data.ConnectionHelper.*;
 import static ru.netology.data.DataHelper.getValidApprovedCard;
 import static ru.netology.data.DataHelper.getValidDeclinedCard;
-import static ru.netology.data.ConnectionHelper.*;
 
 public class HappyTest {
     MainPage mainPage;
@@ -28,6 +28,12 @@ public class HappyTest {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
     }
 
+    @AfterAll
+    static void tearDown() {
+        ConnectionHelper.cleanDb();
+        SelenideLogger.removeListener("AllureSelenide");
+    }
+
     @BeforeEach
     void setUpUrl() {
         mainPage = open(System.getProperty("sut.url"), MainPage.class);
@@ -36,12 +42,6 @@ public class HappyTest {
     @AfterEach
     void cleanDb() {
         ConnectionHelper.cleanDb();
-    }
-
-    @AfterAll
-    static void tearDown() {
-        ConnectionHelper.cleanDb();
-        SelenideLogger.removeListener("AllureSelenide");
     }
 
     @Nested
@@ -72,6 +72,9 @@ public class HappyTest {
             val info = getValidDeclinedCard();
             paymentPage.fillForm(info);
             paymentPage.waitIfFailMessage();
+            val expectedStatus = "DECLINED";
+            val actualStatus = getStatusForPaymentWithDebitCard();
+            assertEquals(expectedStatus, actualStatus);
             assertEquals(0, getOrderCount());
         }
     }

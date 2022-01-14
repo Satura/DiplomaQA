@@ -11,20 +11,20 @@ import ru.netology.data.ConnectionHelper;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ru.netology.data.APIHelper.fillForm;
 import static ru.netology.data.ConnectionHelper.getCreditId;
 import static ru.netology.data.ConnectionHelper.getPaymentId;
 import static ru.netology.data.DataHelper.*;
-import static ru.netology.data.APIHelper.*;
 
 public class APITest {
 
-	String pathToPay = "/api/v1/pay";
-	String pathToCredit = "/api/v1/credit";
-	int successCode = 200;
-	int errorCode = 400;	
-    
-	@BeforeAll
-    static void setUp(){
+    String pathToPay = "/api/v1/pay";
+    String pathToCredit = "/api/v1/credit";
+    int successCode = 200;
+    int errorCode = 400;
+
+    @BeforeAll
+    static void setUp() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(false));
     }
 
@@ -32,23 +32,23 @@ public class APITest {
     static void tearDown() {
         SelenideLogger.removeListener("AllureSelenide");
     }
-    
+
     @AfterEach
-    void clean(){
+    void clean() {
         ConnectionHelper.cleanDb();
     }
 
-	@Test
+    @Test
     void shouldGiveResponseForViladApprovedDebitCard() {
         val validApprovedCard = getValidApprovedCard();
         val response = fillForm(validApprovedCard, pathToPay, successCode);
         assertTrue(response.contains("APPROVED"));
-        
+
         val actualId = getPaymentId();
         assertNotNull(actualId);
     }
-	
-	@Test
+
+    @Test
     void shouldGiveResponseForViladApprovedCreditCard() {
         val validApprovedCard = getValidApprovedCard();
         val response = fillForm(validApprovedCard, pathToCredit, successCode);
@@ -57,8 +57,8 @@ public class APITest {
         val actualId = getCreditId();
         assertNotNull(actualId);
     }
-	
-	@Test
+
+    @Test
     void shouldGiveResponseForViladDeclinedDebitCard() {
         val validDeclinedCard = getValidDeclinedCard();
         val response = fillForm(validDeclinedCard, pathToPay, successCode);
@@ -67,8 +67,8 @@ public class APITest {
         val actualId = getPaymentId();
         assertNotNull(actualId);
     }
-	
-	@Test
+
+    @Test
     void shouldGiveResponseForViladDeclinedCreditCard() {
         val validDeclinedCard = getValidDeclinedCard();
         val response = fillForm(validDeclinedCard, pathToCredit, successCode);
@@ -77,15 +77,15 @@ public class APITest {
         val actualId = getCreditId();
         assertNotNull(actualId);
     }
-	
-	@Test
+
+    @Test
     void shouldGiveResponseForInviladDebitCard() {
         val invalidCard = getEmptyNumberCard();
         val response = fillForm(invalidCard, pathToPay, errorCode);
         assertTrue(response.contains("Bad Request"));
     }
-	
-	@Test
+
+    @Test
     void shouldGiveResponseForInviladCreditCard() {
         val invalidCard = getMuchFutureYearCard();
         val response = fillForm(invalidCard, pathToCredit, errorCode);

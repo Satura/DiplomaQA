@@ -13,15 +13,17 @@ import ru.netology.pages.PaymentPage;
 import java.time.LocalDate;
 
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.netology.data.DataHelper.*;
 
 
-public class FieldsTest {
+public class PaymentFieldsTest {
 
     MainPage mainPage;
     PaymentPage paymentPage;
+    CreditpayPage creditpayPage;
 
     @BeforeAll
     static void setUp() {
@@ -123,7 +125,6 @@ public class FieldsTest {
         paymentPage.fillForm(info);
         paymentPage.waitIfShouldFillFieldMessage();
     }
-
 
     @Test
     void shouldNotPayWhenPastYear() {
@@ -252,4 +253,5 @@ public class FieldsTest {
         paymentPage.fillForm(info);
         assertTrue(paymentPage.getCVVField().isEmpty());
     }
+
 }
