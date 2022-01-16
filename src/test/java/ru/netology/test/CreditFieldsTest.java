@@ -42,7 +42,7 @@ public class CreditFieldsTest {
         creditpayPage = mainPage.payWithCreditCard();
     }
 
-    /* Проверки поля "Номер карты" */
+    /* РџСЂРѕРІРµСЂРєРё РїРѕР»СЏ "РќРѕРјРµСЂ РєР°СЂС‚С‹" */
 
     @Test
     void shouldNotDoPaymentWhenEmptyCard() {
@@ -79,7 +79,7 @@ public class CreditFieldsTest {
         assertTrue(creditpayPage.getNumberField().isEmpty());
     }
 
-    /* Проверки поля "Месяц" */
+    /* РџСЂРѕРІРµСЂРєРё РїРѕР»СЏ "РњРµСЃСЏС†" */
 
     @Test
     void shouldNotPayWhenEmptyMonth() {
@@ -116,7 +116,7 @@ public class CreditFieldsTest {
         assertTrue(creditpayPage.getMonthField().isEmpty());
     }
 
-    /* Проверки поля "Год" */
+    /* РџСЂРѕРІРµСЂРєРё РїРѕР»СЏ "Р“РѕРґ" */
 
     @Test
     void shouldNotPayWhenEmptyYear() {
@@ -170,7 +170,7 @@ public class CreditFieldsTest {
         else creditpayPage.waitIfWrongTermMessage();
     }
 
-    /* Проверки поля "Владелец" */
+    /* РџСЂРѕРІРµСЂРєРё РїРѕР»СЏ "Р’Р»Р°РґРµР»РµС†" */
 
     @Test
     void shouldNotPayWhenEmptyOwner() {
@@ -214,13 +214,13 @@ public class CreditFieldsTest {
         creditpayPage.waitIfWrongFormatMessage();
     }
 
-    /* Проверки поля "CVV" */
+    /* РџСЂРѕРІРµСЂРєРё РїРѕР»СЏ "CVV" */
 
     @Test
     void shouldNotPayWhenEmptyCVV() {
         val info = getEmptyCVVCard();
         creditpayPage.fillForm(info);
-        assertEquals("Поле обязательно для заполнения", creditpayPage.getCVVSubLine().trim());
+        assertEquals("РџРѕР»Рµ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ", creditpayPage.getCVVSubLine().trim());
         creditpayPage.waitIfWrongFormatMessage();
 
     }
