@@ -31,4 +31,4 @@
 
 Для остановки allureServe и приложения используется сочетание клавиш **CRTL + C**
 
-#### [Задание на работу](https://github.com/netology-code/qa-diploma)
+#### [Задание на работу](https://github.com/Satura/qa-diploma)
